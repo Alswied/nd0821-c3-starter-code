@@ -1,4 +1,13 @@
+"""
+Model training, inference, and evaluation utilities.
+
+This module contains:
+- Training logic for a RandomForestClassifier
+- Inference helper for generating predictions
+- Evaluation metrics (precision, recall, F1)
+"""
 from sklearn.metrics import fbeta_score, precision_score, recall_score
+from sklearn.ensemble import RandomForestClassifier
 
 
 def train_model(X_train, y_train):
@@ -16,7 +25,23 @@ def train_model(X_train, y_train):
     model : RandomForestClassifier
         Trained machine learning model.
     """
-    pass
+
+    # Initialize the RandomForestClassifier
+    # - n_estimators=100: number of decision trees in the ensemble
+    # - random_state=42: ensures reproducibility across runs
+    # - n_jobs=-1: use all available CPU cores for training
+
+    model = RandomForestClassifier(
+        n_estimators=100,
+        random_state=42,
+        n_jobs=-1
+    )
+
+    # Train (fit) the model on the training data
+    model.fit(X_train, y_train)
+
+    # Return the trained model so it can be used for inference or evaluation
+    return model
 
 
 def compute_model_metrics(y, preds):
@@ -55,4 +80,6 @@ def inference(model, X):
     preds : np.ndarray
         Predictions from the model.
     """
-    pass
+    # Use the trained model to generate predictions
+    preds = model.predict(X)
+    return preds
