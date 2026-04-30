@@ -1,10 +1,14 @@
 """
 Training script for the Census Income model.
 
-This script loads the cleaned census dataset, trains a RandomForest model
-using the preprocessing utilities, evaluates performance, and saves all
-artifacts required for inference.
+This script:
+- Loads the cleaned census dataset
+- Trains a RandomForestClassifier
+- Evaluates overall model performance
+- Saves model and preprocessing artifacts for later use in inference and evaluation.
+- Computes and outputs performance metrics on data slices
 """
+
 # Script to train machine learning model.
 
 # Add the necessary imports for the starter code.
@@ -14,7 +18,7 @@ import joblib
 from sklearn.model_selection import train_test_split
 
 from starter.starter.ml.data import process_data
-from starter.starter.ml.model import train_model, compute_model_metrics
+from starter.starter.ml.model import train_model, compute_model_metrics, compute_slice_metrics
 
 # Add code to load in the data.
 data = pd.read_csv("starter/data/census.csv")
@@ -73,3 +77,26 @@ print(f"F1-score: {fbeta:.4f}")
 joblib.dump(model, "starter/model/model.pkl")
 joblib.dump(encoder, "starter/model/encoder.pkl")
 joblib.dump(lb, "starter/model/lb.pkl")
+
+# Evaluate model performance on a categorical data slice (Step 7)
+slice_feature = "sex"
+
+slice_results = compute_slice_metrics(
+    data=test,
+    feature=slice_feature,
+    categorical_features=cat_features,
+    model=model,
+    encoder=encoder,
+    lb=lb,
+)
+
+print(f"\nSlice performance by '{slice_feature}':")
+
+for value, metrics in slice_results.items():
+    precision, recall, fbeta = metrics
+    print(
+        f"{slice_feature}={value} | "
+        f"Precision: {precision:.4f}, "
+        f"Recall: {recall:.4f}, "
+        f"F1: {fbeta:.4f}"
+    )

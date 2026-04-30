@@ -5,10 +5,13 @@ This module contains:
 - Training logic for a RandomForestClassifier
 - Inference helper for generating predictions
 - Evaluation metrics (precision, recall, F1)
+- Slice-based performance evaluation for categorical features
 """
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from sklearn.ensemble import RandomForestClassifier
 
+# Import process_data for use in compute_slice_metrics
+from starter.starter.ml.data import process_data
 
 def train_model(X_train, y_train):
     """
@@ -83,3 +86,52 @@ def inference(model, X):
     # Use the trained model to generate predictions
     preds = model.predict(X)
     return preds
+
+def compute_slice_metrics(data, feature, categorical_features, model, encoder, lb):
+    """
+    Compute model performance metrics for slices of the data based on
+    a categorical feature.
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        Dataset containing features and labels.
+    feature : str
+        Categorical feature name to slice on.
+    categorical_features : list
+        List of all categorical feature names.
+    model : trained model
+        Trained machine learning model.
+    encoder : OneHotEncoder
+        Fitted encoder from training.
+    lb : LabelBinarizer
+        Fitted label binarizer.
+
+    Returns
+    -------
+    dict
+        Mapping from feature value to (precision, recall, fbeta).
+    """
+    slice_metrics = {}
+
+    for value in data[feature].unique():
+        slice_data = data[data[feature] == value]
+
+        if slice_data.empty:
+            continue
+
+        X_slice, y_slice, _, _ = process_data(
+            slice_data,
+            categorical_features=categorical_features,
+            label="salary",
+            training=False,
+            encoder=encoder,
+            lb=lb,
+        )
+
+        preds = model.predict(X_slice)
+        precision, recall, fbeta = compute_model_metrics(y_slice, preds)
+
+        slice_metrics[value] = (precision, recall, fbeta)
+
+    return slice_metrics
