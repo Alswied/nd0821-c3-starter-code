@@ -7,6 +7,7 @@ Implements:
 - POST /predict : model inference
 """
 
+from starter.ml.data import process_data
 from pathlib import Path
 import sys
 from typing import Any, Dict
@@ -16,11 +17,10 @@ import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
-# Ensure this directory (starter/) is on sys.path so that `starter.ml...` imports work
+# Ensure this directory (starter/) is on sys.path so that `starter.ml...`
+# imports work
 STARTER_DIR = Path(__file__).resolve().parent
 sys.path.append(str(STARTER_DIR))
-
-from starter.ml.data import process_data
 
 
 app = FastAPI()
@@ -56,7 +56,9 @@ class CensusRecord(BaseModel):
     fnlgt: int = Field(..., example=284582)
     education: str = Field(..., example="Bachelors")
     education_num: int = Field(..., alias="education-num", example=13)
-    marital_status: str = Field(..., alias="marital-status", example="Married-civ-spouse")
+    marital_status: str = Field(...,
+                                alias="marital-status",
+                                example="Married-civ-spouse")
     occupation: str = Field(..., example="Exec-managerial")
     relationship: str = Field(..., example="Husband")
     race: str = Field(..., example="White")
@@ -64,7 +66,9 @@ class CensusRecord(BaseModel):
     capital_gain: int = Field(..., alias="capital-gain", example=0)
     capital_loss: int = Field(..., alias="capital-loss", example=0)
     hours_per_week: int = Field(..., alias="hours-per-week", example=40)
-    native_country: str = Field(..., alias="native-country", example="United-States")
+    native_country: str = Field(...,
+                                alias="native-country",
+                                example="United-States")
 
     class Config:
         populate_by_name = True
@@ -95,7 +99,11 @@ def root() -> Dict[str, str]:
 
 @app.post("/predict")
 def predict(record: CensusRecord) -> Dict[str, Any]:
-    payload = record.model_dump(by_alias=True) if hasattr(record, "model_dump") else record.dict(by_alias=True)
+    payload = record.model_dump(
+        by_alias=True) if hasattr(
+        record,
+        "model_dump") else record.dict(
+            by_alias=True)
     df = pd.DataFrame([payload])
 
     X, _, _, _ = process_data(

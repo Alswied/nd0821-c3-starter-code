@@ -16,6 +16,7 @@ from starter.starter.ml.model import (
     compute_model_metrics,
 )
 
+
 def test_train_model_returns_model():
     """
     Test that train_model returns a fitted RandomForestClassifier.
@@ -26,6 +27,7 @@ def test_train_model_returns_model():
     model = train_model(X, y)
 
     assert isinstance(model, RandomForestClassifier)
+
 
 def test_compute_model_metrics_range():
     """
@@ -39,6 +41,7 @@ def test_compute_model_metrics_range():
     assert 0.0 <= precision <= 1.0
     assert 0.0 <= recall <= 1.0
     assert 0.0 <= fbeta <= 1.0
+
 
 def test_inference_output_shape():
     """

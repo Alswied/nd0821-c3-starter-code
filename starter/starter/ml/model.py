@@ -13,6 +13,7 @@ from sklearn.ensemble import RandomForestClassifier
 # Import process_data for use in compute_slice_metrics
 from starter.starter.ml.data import process_data
 
+
 def train_model(X_train, y_train):
     """
     Trains a machine learning model and returns it.
@@ -49,7 +50,8 @@ def train_model(X_train, y_train):
 
 def compute_model_metrics(y, preds):
     """
-    Validates the trained machine learning model using precision, recall, and F1.
+    Validates the trained machine learning model
+    using precision, recall, and F1.
 
     Inputs
     ------
@@ -87,7 +89,14 @@ def inference(model, X):
     preds = model.predict(X)
     return preds
 
-def compute_slice_metrics(data, feature, categorical_features, model, encoder, lb):
+
+def compute_slice_metrics(
+        data,
+        feature,
+        categorical_features,
+        model,
+        encoder,
+        lb):
     """
     Compute model performance metrics for slices of the data based on
     a categorical feature.

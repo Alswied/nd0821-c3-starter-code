@@ -7,6 +7,7 @@ Rubric requirements covered:
 - POST /predict test for >50K
 """
 
+from main import app  # imports starter/main.py
 from pathlib import Path
 import sys
 
@@ -14,12 +15,12 @@ import pandas as pd
 from fastapi.testclient import TestClient
 
 # --- Make sanitycheck.py happy ---
-# sanitycheck.py adds starter/tests to sys.path, so we add the parent 'starter/'
+# sanitycheck.py adds starter/tests to sys.path,
+# so we add the parent 'starter/'
 # directory so that `import main` resolves to starter/main.py
 STARTER_DIR = Path(__file__).resolve().parents[1]  # .../starter
 sys.path.append(str(STARTER_DIR))
 
-from main import app  # imports starter/main.py
 
 client = TestClient(app)
 
@@ -43,7 +44,8 @@ def test_get_root():
     """GET / must return status code 200 and the greeting JSON."""
     response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == {"message": "Welcome to the Census Income Prediction API"}
+    assert response.json() == {
+        "message": "Welcome to the Census Income Prediction API"}
 
 
 def test_post_predict_leq_50k():

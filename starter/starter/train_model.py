@@ -5,7 +5,8 @@ This script:
 - Loads the cleaned census dataset
 - Trains a RandomForestClassifier
 - Evaluates overall model performance
-- Saves model and preprocessing artifacts for later use in inference and evaluation.
+- Saves model and preprocessing artifacts for
+  later use in inference and evaluation.
 - Computes and outputs performance metrics on data slices
 """
 
@@ -18,7 +19,9 @@ import joblib
 from sklearn.model_selection import train_test_split
 
 from starter.starter.ml.data import process_data
-from starter.starter.ml.model import train_model, compute_model_metrics, compute_slice_metrics
+from starter.starter.ml.model import train_model
+from starter.starter.ml.model import compute_model_metrics
+from starter.starter.ml.model import compute_slice_metrics
 
 # Add code to load in the data.
 data = pd.read_csv("starter/data/census.csv")
@@ -26,7 +29,8 @@ data = pd.read_csv("starter/data/census.csv")
 # Double cleanup of column names
 data.columns = data.columns.str.strip()
 
-# Optional enhancement, use K-fold cross validation instead of a train-test split.
+# Optional enhancement, use K-fold cross validation instead of a
+# train-test split.
 train, test = train_test_split(data, test_size=0.20, random_state=42)
 
 cat_features = [
