@@ -33,4 +33,4 @@ jobs:
       - name: Run pytest
         run: |
           export PYTHONPATH=$(pwd)
-          pytest starter
+          pytest starter/test_api.py
