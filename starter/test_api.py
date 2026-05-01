@@ -7,25 +7,17 @@ Rubric requirements covered:
 - POST /predict test for >50K
 """
 
-from main import app  # imports starter/main.py
 from pathlib import Path
-import sys
 
 import pandas as pd
 from fastapi.testclient import TestClient
 
-# --- Make sanitycheck.py happy ---
-# sanitycheck.py adds starter/tests to sys.path,
-# so we add the parent 'starter/'
-# directory so that `import main` resolves to starter/main.py
-STARTER_DIR = Path(__file__).resolve().parents[1]  # .../starter
-sys.path.append(str(STARTER_DIR))
-
+from main import app
 
 client = TestClient(app)
 
 # Absolute path to data, independent of current working directory
-REPO_ROOT = Path(__file__).resolve().parents[2]     # repo root
+REPO_ROOT = Path(__file__).resolve().parents[1]     # repo root
 DATA_PATH = REPO_ROOT / "starter" / "data" / "census.csv"
 
 
