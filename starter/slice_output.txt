@@ -1,0 +1,2 @@
+sex=Female | Precision: 0.7229, Recall: 0.5150, F1: 0.6015
+sex=Male | Precision: 0.7445, Recall: 0.6599, F1: 0.6997

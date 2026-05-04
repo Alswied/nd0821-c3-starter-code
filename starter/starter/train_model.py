@@ -104,3 +104,14 @@ for value, metrics in slice_results.items():
         f"Recall: {recall:.4f}, "
         f"F1: {fbeta:.4f}"
     )
+
+# Write slice metrics to file (rubric requirement - resubmission)
+with open("starter/slice_output.txt", "w", encoding="utf-8") as f:
+    for value, metrics in slice_results.items():
+        precision, recall, fbeta = metrics
+        f.write(
+            f"{slice_feature}={value} | "
+            f"Precision: {precision:.4f}, "
+            f"Recall: {recall:.4f}, "
+            f"F1: {fbeta:.4f}\n"
+        )
